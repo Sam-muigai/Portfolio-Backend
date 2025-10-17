@@ -1,5 +1,6 @@
 package com.portfolio.backend.controllers
 
+import com.portfolio.backend.dtos.UserResponse
 import com.portfolio.backend.models.User
 import com.portfolio.backend.repositories.UserRepository
 import org.springframework.http.ResponseEntity
@@ -16,11 +17,7 @@ class UserController(
     private val userRepository: UserRepository
 ) {
 
-    data class UserResponse(
-        val name: String,
-        val country: String,
-        val role: String
-    )
+
 
     @GetMapping("/all")
     fun getUserList() = userRepository.findAll()

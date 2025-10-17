@@ -1,6 +1,7 @@
 package com.portfolio.backend.controllers
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.portfolio.backend.dtos.ExperienceRequest
 import com.portfolio.backend.models.Experience
 import com.portfolio.backend.repositories.ExperienceRepository
 import org.springframework.http.ResponseEntity
@@ -18,18 +19,6 @@ import java.time.LocalDate
 class ExperienceController(
     private val experienceRepository: ExperienceRepository
 ) {
-
-    data class ExperienceRequest(
-        val title: String,
-        @param:JsonProperty("company_name")
-        val companyName: String,
-        val location: String,
-        @param:JsonProperty("from_date")
-        val fromDate: String,
-        @param:JsonProperty("to_date")
-        val toDate: String?,
-        val description: String,
-    )
 
     @GetMapping("/{userId}/all")
     fun getAllExperiences(@PathVariable("userId") userId: Long): ResponseEntity<List<Experience>> {

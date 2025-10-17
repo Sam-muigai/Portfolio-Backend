@@ -1,6 +1,7 @@
 package com.portfolio.backend.controllers
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.portfolio.backend.dtos.SocialMediaRequest
 import com.portfolio.backend.models.SocialMedia
 import com.portfolio.backend.repositories.SocialMediaRepository
 import org.springframework.http.ResponseEntity
@@ -16,18 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 class SocialMediaController(
     private val socialMediaRepository: SocialMediaRepository
 ) {
-    data class SocialMediaRequest(
-        @param:JsonProperty("github_url")
-        val githubUrl: String,
-        @param:JsonProperty("portfolio_url")
-        val portfolioUrl: String,
-        @param:JsonProperty("x_url")
-        val xUrl: String,
-        @param:JsonProperty("linkedin_url")
-        val linkedinUrl: String,
-        @param:JsonProperty("youtube_url")
-        val youtubeUrl: String,
-    )
+
 
     @GetMapping("/{userId}")
     fun getSocialMedia(@PathVariable("userId") userId: Long): ResponseEntity<SocialMedia> {

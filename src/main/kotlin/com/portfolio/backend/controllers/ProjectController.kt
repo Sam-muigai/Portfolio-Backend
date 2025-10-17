@@ -1,6 +1,8 @@
 package com.portfolio.backend.controllers
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.portfolio.backend.dtos.ProjectRequest
+import com.portfolio.backend.dtos.ProjectResponse
 import com.portfolio.backend.models.Project
 import com.portfolio.backend.repositories.ProjectRepository
 import org.springframework.http.ResponseEntity
@@ -18,24 +20,6 @@ class ProjectController(
     private val projectRepository: ProjectRepository
 ) {
 
-    data class ProjectRequest(
-        val title: String,
-        val description: String,
-        @param:JsonProperty("image_url")
-        val imageUrl: String,
-        @param:JsonProperty("project_url")
-        val projectUrl: String,
-    )
-
-    data class ProjectResponse(
-        val id: Long,
-        val title: String,
-        val description: String,
-        @param:JsonProperty("image_url")
-        val imageUrl: String,
-        @param:JsonProperty("project_url")
-        val projectUrl: String,
-    )
 
     @GetMapping("/{userId}/all")
     fun getProjects(@PathVariable("userId") userId: Long): ResponseEntity<List<ProjectResponse>> {
