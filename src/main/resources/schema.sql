@@ -30,8 +30,19 @@ CREATE TABLE IF NOT EXISTS experiences
     description  TEXT,
     user_id      INTEGER      NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user_table (id)
-)
+);
 
+CREATE TABLE IF NOT EXISTS social_media
+(
+    id            SERIAL PRIMARY KEY,
+    linkedin_url VARCHAR(255) NOT NULL,
+    github_url    VARCHAR(255) NOT NULL,
+    x_url         VARCHAR(255),
+    youtube_url   VARCHAR(255),
+    portfolio_url VARCHAR(255),
+    user_id       INTEGER      NOT NULL UNIQUE,
+    FOREIGN KEY (user_id) REFERENCES user_table (id)
+);
 
 
 
