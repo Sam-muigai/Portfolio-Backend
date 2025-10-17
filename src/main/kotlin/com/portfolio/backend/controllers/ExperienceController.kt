@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
 
@@ -20,16 +21,16 @@ class ExperienceController(
     private val experienceRepository: ExperienceRepository
 ) {
 
-    @GetMapping("/{userId}/all")
-    fun getAllExperiences(@PathVariable("userId") userId: Long): ResponseEntity<List<Experience>> {
+    @GetMapping("/all")
+    fun getAllExperiences(@RequestParam("userId") userId: Long): ResponseEntity<List<Experience>> {
         val experiences = experienceRepository.getAllExperiences(userId)
         return ResponseEntity.ok(experiences)
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping
     fun createExperience(
         @RequestBody experienceRequest: ExperienceRequest,
-        @PathVariable("userId") userId: Long
+        @RequestParam("userId") userId: Long
     ): ResponseEntity<Unit> {
         val experience = Experience(
             title = experienceRequest.title,
@@ -43,8 +44,8 @@ class ExperienceController(
         return ResponseEntity.ok().build()
     }
 
-    @DeleteMapping("/{experienceId}")
-    fun deleteExperience(@PathVariable("experienceId") experienceId: Long): ResponseEntity<Unit> {
+    @DeleteMapping
+    fun deleteExperience(@RequestParam("experienceId") experienceId: Long): ResponseEntity<Unit> {
         experienceRepository.deleteExperience(experienceId)
         return ResponseEntity.ok().build()
     }

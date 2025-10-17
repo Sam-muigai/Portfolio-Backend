@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
     private val userRepository: UserRepository
 ) {
-
 
 
     @GetMapping("/all")
@@ -28,8 +28,8 @@ class UserController(
         return ResponseEntity.ok().build()
     }
 
-    @GetMapping("/{id}")
-    fun getUser(@PathVariable("id") id: Long): ResponseEntity<UserResponse> {
+    @GetMapping()
+    fun getUser(@RequestParam("userId") id: Long): ResponseEntity<UserResponse> {
         val user = userRepository.findById(id)
         return if (user != null) {
             ResponseEntity.ok(

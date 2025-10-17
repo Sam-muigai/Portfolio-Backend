@@ -2,7 +2,10 @@ package com.portfolio.backend.dtos
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class SocialMediaRequest(
+/**
+ * Shared for both request and response.
+ * */
+data class SocialMediaDto(
     @param:JsonProperty("github_url")
     val githubUrl: String,
     @param:JsonProperty("portfolio_url")

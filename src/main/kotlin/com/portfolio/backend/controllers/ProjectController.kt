@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -21,8 +22,8 @@ class ProjectController(
 ) {
 
 
-    @GetMapping("/{userId}/all")
-    fun getProjects(@PathVariable("userId") userId: Long): ResponseEntity<List<ProjectResponse>> {
+    @GetMapping("/all")
+    fun getProjects(@RequestParam("userId") userId: Long): ResponseEntity<List<ProjectResponse>> {
         val projects = projectRepository.getAllProjects(userId).map { project ->
             ProjectResponse(
                 id = project.id!!,
@@ -35,9 +36,9 @@ class ProjectController(
         return ResponseEntity.ok(projects)
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping
     fun createProject(
-        @PathVariable("userId") userId: Long,
+        @RequestParam("userId") userId: Long,
         @RequestBody project: ProjectRequest
     ): ResponseEntity<Unit> {
         val project = Project(
@@ -50,8 +51,8 @@ class ProjectController(
         return ResponseEntity.ok().build()
     }
 
-    @DeleteMapping("/{projectId}")
-    fun deleteProject(@PathVariable("projectId") projectId: Long): ResponseEntity<Unit> {
+    @DeleteMapping
+    fun deleteProject(@RequestParam("projectId") projectId: Long): ResponseEntity<Unit> {
         projectRepository.deleteProject(projectId)
         return ResponseEntity.ok().build()
     }
