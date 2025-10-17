@@ -11,6 +11,7 @@ class ProjectRepository(
 ) {
     private val rowMapper = RowMapper<Project> { rs, _ ->
         Project(
+            id = rs.getLong("id"),
             title = rs.getString("title"),
             description = rs.getString("description"),
             imageUrl = rs.getString("image_url"),
@@ -25,5 +26,7 @@ class ProjectRepository(
         "INSERT INTO projects (title, description, image_url, project_url, user_id) VALUES (?, ?, ?, ?, ?)",
         project.title, project.description, project.imageUrl, project.projectUrl, userId
     )
+
+    fun deleteProject(projectId: Long) = jdbcTemplate.update("DELETE FROM projects WHERE id = ?", projectId)
 }
 
