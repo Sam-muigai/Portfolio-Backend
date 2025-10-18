@@ -1,5 +1,6 @@
 package com.portfolio.backend.controllers
 
+import com.portfolio.backend.dtos.OkayResponse
 import com.portfolio.backend.dtos.SocialMediaDto
 import com.portfolio.backend.models.SocialMedia
 import com.portfolio.backend.repositories.SocialMediaRepository
@@ -28,8 +29,9 @@ class SocialMediaController(
     fun addSocialMedia(
         @RequestParam("userId") userId: Long,
         @RequestBody socialMediaDto: SocialMediaDto,
-    ): ResponseEntity<Unit> {
+    ): ResponseEntity<OkayResponse> {
         socialMediaService.addSocialMedia(userId, socialMediaDto)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok()
+            .body(OkayResponse(message = "SocialMedia information added successfully"))
     }
 }

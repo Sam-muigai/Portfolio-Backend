@@ -1,6 +1,7 @@
 package com.portfolio.backend.controllers
 
 import com.portfolio.backend.config.NotFoundException
+import com.portfolio.backend.dtos.OkayResponse
 import com.portfolio.backend.dtos.SocialMediaDto
 import com.portfolio.backend.dtos.UserResponse
 import com.portfolio.backend.models.User
@@ -20,9 +21,11 @@ class UserController(
     fun getUserList() = userService.getAllUsers()
 
     @PostMapping
-    fun createUser(@RequestBody user: User): ResponseEntity<Unit> {
+    fun createUser(@RequestBody user: User): ResponseEntity<OkayResponse> {
         userService.saveUser(user)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok()
+            .body(OkayResponse(message = "User created successful"))
+
     }
 
     @GetMapping

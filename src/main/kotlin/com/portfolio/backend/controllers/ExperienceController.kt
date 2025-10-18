@@ -1,6 +1,7 @@
 package com.portfolio.backend.controllers
 
 import com.portfolio.backend.dtos.ExperienceDto
+import com.portfolio.backend.dtos.OkayResponse
 import com.portfolio.backend.models.Experience
 import com.portfolio.backend.services.ExperienceService
 import org.springframework.http.ResponseEntity
@@ -28,14 +29,16 @@ class ExperienceController(
     fun createExperience(
         @RequestBody experienceDto: ExperienceDto,
         @RequestParam("userId") userId: Long
-    ): ResponseEntity<Unit> {
+    ): ResponseEntity<OkayResponse> {
         experienceService.saveExperience(experienceDto, userId)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok()
+            .body(OkayResponse(message = "Experience added successfully"))
     }
 
     @DeleteMapping
-    fun deleteExperience(@RequestParam("experienceId") experienceId: Long): ResponseEntity<Unit> {
+    fun deleteExperience(@RequestParam("experienceId") experienceId: Long): ResponseEntity<OkayResponse> {
         experienceService.deleteExperience(experienceId)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok()
+            .body(OkayResponse(message = "Experience deleted successfully"))
     }
 }

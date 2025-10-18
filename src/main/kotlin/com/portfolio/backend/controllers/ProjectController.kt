@@ -1,6 +1,7 @@
 package com.portfolio.backend.controllers
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.portfolio.backend.dtos.OkayResponse
 import com.portfolio.backend.dtos.ProjectRequest
 import com.portfolio.backend.dtos.ProjectResponse
 import com.portfolio.backend.models.Project
@@ -33,15 +34,17 @@ class ProjectController(
     fun createProject(
         @RequestParam("userId") userId: Long,
         @RequestBody project: ProjectRequest
-    ): ResponseEntity<Unit> {
+    ): ResponseEntity<OkayResponse> {
         projectService.createProject(userId, project)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok()
+            .body(OkayResponse(message = "Project added successfully"))
     }
 
     @DeleteMapping
-    fun deleteProject(@RequestParam("projectId") projectId: Long): ResponseEntity<Unit> {
+    fun deleteProject(@RequestParam("projectId") projectId: Long): ResponseEntity<OkayResponse> {
         projectService.deleteProject(projectId)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok()
+            .body(OkayResponse(message = "Project deleted successfully"))
     }
 
 
