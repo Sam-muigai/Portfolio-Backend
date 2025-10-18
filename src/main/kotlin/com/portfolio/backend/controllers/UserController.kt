@@ -1,5 +1,6 @@
 package com.portfolio.backend.controllers
 
+import com.portfolio.backend.config.NotFoundException
 import com.portfolio.backend.dtos.SocialMediaDto
 import com.portfolio.backend.dtos.UserResponse
 import com.portfolio.backend.models.User
@@ -19,17 +20,16 @@ class UserController(
     @GetMapping("/all")
     fun getUserList() = userRepository.findAll()
 
-    @PostMapping("")
+    @PostMapping
     fun createUser(@RequestBody user: User): ResponseEntity<Unit> {
         userRepository.save(user)
         return ResponseEntity.ok().build()
     }
 
-    @GetMapping()
+    @GetMapping
     fun getUser(@RequestParam("userId") id: Long): ResponseEntity<UserResponse> {
         val user = userRepository.findById(id)
         return if (user != null) {
-
             val socialMedia = socialMediaRepository.findByUserId(id)?.run {
                 SocialMediaDto(
                     githubUrl = githubUrl,
@@ -39,7 +39,6 @@ class UserController(
                     youtubeUrl = youtubeUrl
                 )
             }
-
             ResponseEntity.ok(
                 UserResponse(
                     user.name,
@@ -51,7 +50,7 @@ class UserController(
                 )
             )
         } else {
-            ResponseEntity.notFound().build()
+            throw NotFoundException("User not found")
         }
     }
 
