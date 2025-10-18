@@ -1,7 +1,7 @@
 package com.portfolio.backend.services
 
 import com.portfolio.backend.config.NotFoundException
-import com.portfolio.backend.dtos.ExperienceRequest
+import com.portfolio.backend.dtos.ExperienceDto
 import com.portfolio.backend.models.Experience
 import com.portfolio.backend.repositories.ExperienceRepository
 import com.portfolio.backend.repositories.UserRepository
@@ -15,19 +15,19 @@ class ExperienceService(
 ) {
 
     fun saveExperience(
-        experienceRequest: ExperienceRequest,
+        experienceDto: ExperienceDto,
         userId: Long
     ) {
-        if (userRepository.findById(userId) != null) {
+        if (userRepository.findById(userId) == null) {
             throw NotFoundException("User not found")
         }
         val experience = Experience(
-            title = experienceRequest.title,
-            companyName = experienceRequest.companyName,
-            location = experienceRequest.location,
-            fromDate = LocalDate.parse(experienceRequest.fromDate),
-            toDate = experienceRequest.toDate?.let { LocalDate.parse(it) },
-            description = experienceRequest.description
+            title = experienceDto.title,
+            companyName = experienceDto.companyName,
+            location = experienceDto.location,
+            fromDate = LocalDate.parse(experienceDto.fromDate),
+            toDate = experienceDto.toDate?.let { LocalDate.parse(it) },
+            description = experienceDto.description
         )
         experienceRepository.save(experience, userId)
     }
@@ -36,10 +36,19 @@ class ExperienceService(
         experienceRepository.deleteExperience(experienceId)
     }
 
-    fun getAllExperiences(userId: Long): List<Experience> {
-        if (userRepository.findById(userId) != null) {
+    fun getAllExperiences(userId: Long): List<ExperienceDto> {
+        if (userRepository.findById(userId) == null) {
             throw NotFoundException("User not found")
         }
-        return experienceRepository.getAllExperiences(userId)
+        return experienceRepository.getAllExperiences(userId).map {
+            ExperienceDto(
+                title = it.title,
+                companyName = it.companyName,
+                location = it.location,
+                fromDate = it.fromDate.toString(),
+                toDate = it.toDate?.toString(),
+                description = it.description
+            )
+        }
     }
 }

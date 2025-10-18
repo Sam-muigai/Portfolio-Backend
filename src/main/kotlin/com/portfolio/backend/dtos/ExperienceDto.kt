@@ -2,7 +2,7 @@ package com.portfolio.backend.dtos
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class ExperienceRequest(
+data class ExperienceDto(
     val title: String,
     @param:JsonProperty("company_name")
     val companyName: String,
