@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS user_table
     user_name            VARCHAR(255) NOT NULL,
     country              VARCHAR(255) NOT NULL,
     current_user_role    VARCHAR(255) NOT NULL,
+    about            TEXT,
+    email                VARCHAR(255) NOT NULL,
     profile_picture_link TEXT
 );
 
@@ -43,6 +45,9 @@ CREATE TABLE IF NOT EXISTS social_media
     user_id       INTEGER      NOT NULL UNIQUE,
     FOREIGN KEY (user_id) REFERENCES user_table (id)
 );
+
+
+
 
 
 

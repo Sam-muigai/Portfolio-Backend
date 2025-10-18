@@ -8,4 +8,6 @@ data class UserResponse(
     val role: String,
     @param:JsonProperty("social_media")
     val socialMedia: SocialMediaDto? = null,
+    val email: String,
+    val about: String
 )

@@ -45,7 +45,9 @@ class UserController(
                     user.name,
                     user.country,
                     user.role,
-                    socialMedia
+                    socialMedia,
+                    user.email,
+                    user.about
                 )
             )
         } else {
