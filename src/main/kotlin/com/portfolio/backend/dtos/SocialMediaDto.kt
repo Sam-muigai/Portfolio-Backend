@@ -11,6 +11,7 @@ data class SocialMediaDto(
     @param:JsonProperty("portfolio_url")
     val portfolioUrl: String,
     @param:JsonProperty("x_url")
+    @get:JsonProperty("x_url")
     val xUrl: String,
     @param:JsonProperty("linkedin_url")
     val linkedinUrl: String,
