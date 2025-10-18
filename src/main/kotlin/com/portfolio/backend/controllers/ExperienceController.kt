@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.portfolio.backend.dtos.ExperienceRequest
 import com.portfolio.backend.models.Experience
 import com.portfolio.backend.repositories.ExperienceRepository
+import com.portfolio.backend.services.ExperienceService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,12 +19,12 @@ import java.time.LocalDate
 @RestController
 @RequestMapping("/experience")
 class ExperienceController(
-    private val experienceRepository: ExperienceRepository
+    private val experienceService: ExperienceService
 ) {
 
     @GetMapping("/all")
     fun getAllExperiences(@RequestParam("userId") userId: Long): ResponseEntity<List<Experience>> {
-        val experiences = experienceRepository.getAllExperiences(userId)
+        val experiences = experienceService.getAllExperiences(userId)
         return ResponseEntity.ok(experiences)
     }
 
@@ -32,21 +33,13 @@ class ExperienceController(
         @RequestBody experienceRequest: ExperienceRequest,
         @RequestParam("userId") userId: Long
     ): ResponseEntity<Unit> {
-        val experience = Experience(
-            title = experienceRequest.title,
-            companyName = experienceRequest.companyName,
-            location = experienceRequest.location,
-            fromDate = LocalDate.parse(experienceRequest.fromDate),
-            toDate = experienceRequest.toDate?.let { LocalDate.parse(it) },
-            description = experienceRequest.description
-        )
-        experienceRepository.save(experience, userId)
+        experienceService.saveExperience(experienceRequest, userId)
         return ResponseEntity.ok().build()
     }
 
     @DeleteMapping
     fun deleteExperience(@RequestParam("experienceId") experienceId: Long): ResponseEntity<Unit> {
-        experienceRepository.deleteExperience(experienceId)
+        experienceService.deleteExperience(experienceId)
         return ResponseEntity.ok().build()
     }
 }

@@ -6,52 +6,28 @@ import com.portfolio.backend.dtos.UserResponse
 import com.portfolio.backend.models.User
 import com.portfolio.backend.repositories.SocialMediaRepository
 import com.portfolio.backend.repositories.UserRepository
+import com.portfolio.backend.services.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/user")
 class UserController(
-    private val userRepository: UserRepository,
-    private val socialMediaRepository: SocialMediaRepository
+    private val userService: UserService
 ) {
 
-
     @GetMapping("/all")
-    fun getUserList() = userRepository.findAll()
+    fun getUserList() = userService.getAllUsers()
 
     @PostMapping
     fun createUser(@RequestBody user: User): ResponseEntity<Unit> {
-        userRepository.save(user)
+        userService.saveUser(user)
         return ResponseEntity.ok().build()
     }
 
     @GetMapping
-    fun getUser(@RequestParam("userId") id: Long): ResponseEntity<UserResponse> {
-        val user = userRepository.findById(id)
-        return if (user != null) {
-            val socialMedia = socialMediaRepository.findByUserId(id)?.run {
-                SocialMediaDto(
-                    githubUrl = githubUrl,
-                    portfolioUrl = portfolioUrl,
-                    xUrl = xUrl,
-                    linkedinUrl = linkedinUrl,
-                    youtubeUrl = youtubeUrl
-                )
-            }
-            ResponseEntity.ok(
-                UserResponse(
-                    user.name,
-                    user.country,
-                    user.role,
-                    socialMedia,
-                    user.email,
-                    user.about
-                )
-            )
-        } else {
-            throw NotFoundException("User not found")
-        }
+    fun getUser(@RequestParam("userId") userId: Long): ResponseEntity<UserResponse> {
+        return ResponseEntity.ok(userService.getUserById(userId))
     }
 
 }
