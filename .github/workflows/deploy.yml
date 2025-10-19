@@ -23,6 +23,20 @@ jobs:
         run: |
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
-      - name: Build jar
+      - name: Build jar file
         run: |
           mvn clean package
+
+      - name: Deploy jar file to the server
+        run: |
+          JAR_NAME="backend-0.0.1-SNAPSHOT.jar"
+          LOCAL_JAR_PATH="target/$JAR_NAME"
+          REMOTE_SERVER="root@${{ secrets.SSH_HOST }}"
+          REMOTE_JAR_PATH="/opt/portfolio"
+          
+          rsync -avz -e "ssh" $LOCAL_JAR_PATH $REMOTE_SERVER:$REMOTE_JAR_DIR/$JAR_NAME
+          
+          ssh $REMOTE_SERVER << EOF
+              mv $REMOTE_JAR_DIR/$JAR_NAME $REMOTE_JAR_DIR/portfolio.jar
+              sudo systemctl restart portfolio.service
+          EOF
