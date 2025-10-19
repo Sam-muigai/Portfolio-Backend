@@ -34,9 +34,9 @@ jobs:
           REMOTE_SERVER="root@${{ secrets.SSH_HOST }}"
           REMOTE_JAR_PATH="/opt/portfolio"
           
-          rsync -avz -e "ssh" $LOCAL_JAR_PATH $REMOTE_SERVER:$REMOTE_JAR_DIR/$JAR_NAME
+          rsync -avz -e "ssh" $LOCAL_JAR_PATH $REMOTE_SERVER:$REMOTE_JAR_PATH/$JAR_NAME
           
           ssh $REMOTE_SERVER << EOF
-              mv $REMOTE_JAR_DIR/$JAR_NAME $REMOTE_JAR_DIR/portfolio.jar
+              mv $REMOTE_JAR_DIR/$JAR_NAME $REMOTE_JAR_PATH/portfolio.jar
               sudo systemctl restart portfolio.service
           EOF
