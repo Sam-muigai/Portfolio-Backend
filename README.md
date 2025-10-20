@@ -1,6 +1,6 @@
 # Portfolio Backend
 
-A simple Kotlin + Spring Boot REST API that powers a portfolio website. It exposes endpoints to manage Users, Projects, Work Experiences, and Social Media links, and persists data in PostgreSQL. The database schema is initialized automatically at application startup via schema.sql.
+A simple Kotlin + Spring Boot REST API that powers a portfolio mobile app I will be working on(and possibly website). It exposes endpoints to manage Users, Projects, Work Experiences, and Social Media links, and persists data in PostgreSQL. The database schema is initialized automatically at application startup via schema.sql.
 
 - Language/Framework: Kotlin, Spring Boot 3
 - Build tool: Maven
