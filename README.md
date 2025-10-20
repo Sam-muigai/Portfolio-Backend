@@ -40,12 +40,8 @@ Note about database initialization
 
 - GET /
   - Response (application/json):
-    ```json
-    {
-      "status": 200,
-      "message": "We are live 💪",
-      "timestamp": 1690000000000
-    }
+    ```bash
+      We are live 💪
     ```
   - Purpose: quick readiness check after startup (useful for smoke tests, container health checks, or initial verification that the service is running).
 
@@ -183,7 +179,7 @@ erDiagram
         VARCHAR x_url
         VARCHAR youtube_url
         VARCHAR portfolio_url
-        INTEGER user_id UNIQUE FK
+        INTEGER user_id FK
     }
 
     user_table ||--o{ projects : "has"
@@ -191,56 +187,30 @@ erDiagram
     user_table ||--|| social_media : "has"
 ```
 
-## Database structure
-
-The schema is defined in src/main/resources/schema.sql and is created on startup.
-
-Tables
-- user_table
-  - id SERIAL PRIMARY KEY
-  - user_name VARCHAR(255) NOT NULL
-  - country VARCHAR(255) NOT NULL
-  - current_user_role VARCHAR(255) NOT NULL
-  - about TEXT
-  - email VARCHAR(255) NOT NULL
-  - profile_picture_link TEXT
-
-- projects
-  - id SERIAL PRIMARY KEY
-  - title VARCHAR(255) NOT NULL
-  - description TEXT NOT NULL
-  - image_url TEXT
-  - project_url TEXT NOT NULL
-  - user_id INTEGER NOT NULL REFERENCES user_table(id)
-
-- experiences
-  - id SERIAL PRIMARY KEY
-  - title VARCHAR(255) NOT NULL
-  - company_name VARCHAR(255) NOT NULL
-  - location VARCHAR(255) NOT NULL
-  - from_date DATE NOT NULL
-  - to_date DATE NULL
-  - description TEXT
-  - user_id INTEGER NOT NULL REFERENCES user_table(id)
-
-- social_media
-  - id SERIAL PRIMARY KEY
-  - linkedin_url VARCHAR(255) NOT NULL
-  - github_url VARCHAR(255) NOT NULL
-  - x_url VARCHAR(255) NULL
-  - youtube_url VARCHAR(255) NULL
-  - portfolio_url VARCHAR(255) NULL
-  - user_id INTEGER NOT NULL UNIQUE REFERENCES user_table(id)
-
 Entity notes
 - The application uses repositories over JDBC; models map fields into the above tables. UserResponse aggregates optional social media for a given user.
 
 
-## Example cURL
+## 🧪 Example cURL
 
-- Health check: curl -i http://localhost:7080/
-- Create user: curl -X POST http://localhost:7080/user -H 'Content-Type: application/json' -d '{"id":0,"name":"John","country":"KE","role":"Engineer","email":"john@example.com","about":"Hi"}'
-- List projects: curl "http://localhost:7080/project/all?userId=1"
+```bash
+# 🩺 Health Check
+curl -i http://localhost:7080/
+
+# 👤 Create User
+curl -X POST http://localhost:7080/user \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John",
+    "country": "KE",
+    "role": "Engineer",
+    "email": "john@example.com",
+    "about": "Hi"
+  }'
+
+# 📂 List Projects
+curl "http://localhost:7080/project/all?userId=1"
+```
 
 
 ## Contributing
@@ -251,7 +221,7 @@ Thank you for your interest in contributing! To propose changes:
 2. Create a feature branch from main: git checkout -b feat/short-description
 3. Run the project locally and ensure endpoints work.
 4. Make minimal, focused changes. Add or update documentation as needed.
-5. If you add logic, consider adding tests under src/test/kotlin (JUnit 5/KotlinTest configured in pom.xml).
+5. If you add logic, consider adding tests under src/test/kotlin .
 6. Ensure code compiles: mvn -q -DskipTests=false test
 7. Commit with a clear message (e.g., feat: add delete project endpoint) and push your branch.
 8. Open a Pull Request describing the change, rationale, and testing performed.
@@ -261,11 +231,3 @@ Code style & notes
 - Keep API contracts backward compatible when possible.
 - Handle NotFoundException for missing resources consistently.
 
-
-## Configuration reference
-
-Relevant config is in src/main/resources/application.yml:
-- server.port: 7080
-- spring.datasource.url: jdbc:postgresql://localhost:${DB_PORT}/${DB_NAME}
-- spring.sql.init.mode: always (applies schema.sql)
-- spring.jpa.hibernate.ddl-auto: none
