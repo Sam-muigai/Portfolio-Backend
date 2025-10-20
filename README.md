@@ -41,7 +41,11 @@ Note about database initialization
 - GET /
   - Response (application/json):
     ```json
-      We are live 💪
+    {
+      "status": 200,
+      "message": "We are live 💪",
+      "timestamp": 1690000000000
+    }
     ```
   - Purpose: quick readiness check after startup (useful for smoke tests, container health checks, or initial verification that the service is running).
 
@@ -137,6 +141,55 @@ Social media
 Notes
 - For most operations, a valid userId must exist; otherwise the API responds with 404 Not Found.
 
+
+## Database diagram
+
+```mermaid
+erDiagram
+    user_table {
+        SERIAL id PK
+        VARCHAR user_name
+        VARCHAR country
+        VARCHAR current_user_role
+        TEXT about
+        VARCHAR email
+        TEXT profile_picture_link
+    }
+
+    projects {
+        SERIAL id PK
+        VARCHAR title
+        TEXT description
+        TEXT image_url
+        TEXT project_url
+        INTEGER user_id FK
+    }
+
+    experiences {
+        SERIAL id PK
+        VARCHAR title
+        VARCHAR company_name
+        VARCHAR location
+        DATE from_date
+        DATE to_date
+        TEXT description
+        INTEGER user_id FK
+    }
+
+    social_media {
+        SERIAL id PK
+        VARCHAR linkedin_url
+        VARCHAR github_url
+        VARCHAR x_url
+        VARCHAR youtube_url
+        VARCHAR portfolio_url
+        INTEGER user_id UNIQUE FK
+    }
+
+    user_table ||--o{ projects : "has"
+    user_table ||--o{ experiences : "has"
+    user_table ||--|| social_media : "has"
+```
 
 ## Database structure
 
