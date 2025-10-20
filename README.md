@@ -41,11 +41,7 @@ Note about database initialization
 - GET /
   - Response (application/json):
     ```json
-    {
-      "status": 200,
-      "message": "We are live 💪",
-      "timestamp": 1690000000000
-    }
+      We are live 💪
     ```
   - Purpose: quick readiness check after startup (useful for smoke tests, container health checks, or initial verification that the service is running).
 
@@ -64,14 +60,7 @@ Users
   - Returns: UserResponse
   - Response shape:
     ```json
-    {
-      "name": "...",
-      "country": "...",
-      "role": "...",
-      "social_media": null,
-      "email": "...",
-      "about": "..."
-    }
+    { "name": "...", "country": "...","role": "...", "social_media": null, "email": "...", "about": "..." }
     ```
 - POST /user
   - Body (application/json):
