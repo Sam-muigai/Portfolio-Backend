@@ -39,7 +39,14 @@ Note about database initialization
 ## Initialization/Health-check endpoint
 
 - GET /
-  - Response: We are live 💪
+  - Response (application/json):
+    ```json
+    {
+      "status": 200,
+      "message": "We are live 💪",
+      "timestamp": 1690000000000
+    }
+    ```
   - Purpose: quick readiness check after startup (useful for smoke tests, container health checks, or initial verification that the service is running).
 
 
@@ -55,39 +62,88 @@ Users
   - Returns: List of users
 - GET /user?userId=<id>
   - Returns: UserResponse
-  - Shape: { "name": "...", "country": "...", "role": "...", "social_media": { ... } | null, "email": "...", "about": "..." }
+  - Response shape:
+    ```json
+    {
+      "name": "...",
+      "country": "...",
+      "role": "...",
+      "social_media": null,
+      "email": "...",
+      "about": "..."
+    }
+    ```
 - POST /user
   - Body (application/json):
+    ```json
     { "id": 0, "name": "John Doe", "country": "KE", "role": "Software Engineer", "email": "john@example.com", "about": "About me" }
-  - Response: { "message": "User created successful" }
+    ```
+  - Response:
+    ```json
+    { "message": "User created successful" }
+    ```
 
 Projects
 - GET /project/all?userId=<userId>
-  - Returns: [ { "id": 1, "title": "...", "description": "...", "image_url": "...", "project_url": "..." }, ... ]
+  - Returns:
+    ```json
+    [
+      { "id": 1, "title": "...", "description": "...", "image_url": "...", "project_url": "..." }
+    ]
+    ```
 - POST /project?userId=<userId>
   - Body:
+    ```json
     { "title": "My App", "description": "...", "image_url": "https://...", "project_url": "https://..." }
-  - Response: { "message": "Project added successfully" }
+    ```
+  - Response:
+    ```json
+    { "message": "Project added successfully" }
+    ```
 - DELETE /project?projectId=<projectId>
-  - Response: { "message": "Project deleted successfully" }
+  - Response:
+    ```json
+    { "message": "Project deleted successfully" }
+    ```
 
 Experience
 - GET /experience/all?userId=<userId>
-  - Returns: [ { "title": "...", "company_name": "...", "location": "...", "from_date": "YYYY-MM-DD", "to_date": "YYYY-MM-DD" | null, "description": "..." }, ... ]
+  - Returns:
+    ```json
+    [
+      { "title": "...", "company_name": "...", "location": "...", "from_date": "2022-01-01", "to_date": null, "description": "..." }
+    ]
+    ```
 - POST /experience?userId=<userId>
   - Body:
+    ```json
     { "title": "Software Engineer", "company_name": "Acme", "location": "Nairobi", "from_date": "2022-01-01", "to_date": null, "description": "Built things" }
-  - Response: { "message": "Experience added successfully" }
+    ```
+  - Response:
+    ```json
+    { "message": "Experience added successfully" }
+    ```
 - DELETE /experience?experienceId=<experienceId>
-  - Response: { "message": "Experience deleted successfully" }
+  - Response:
+    ```json
+    { "message": "Experience deleted successfully" }
+    ```
 
 Social media
 - GET /social-media?userId=<userId>
-  - Returns: { "github_url": "...", "portfolio_url": "...", "x_url": "...", "linkedin_url": "...", "youtube_url": "..." }
+  - Returns:
+    ```json
+    { "github_url": "...", "portfolio_url": "...", "x_url": "...", "linkedin_url": "...", "youtube_url": "..." }
+    ```
 - POST /social-media?userId=<userId>
   - Body:
+    ```json
     { "github_url": "https://github.com/username", "portfolio_url": "https://me.example", "x_url": "https://x.com/handle", "linkedin_url": "https://linkedin.com/in/...", "youtube_url": "https://youtube.com/@..." }
-  - Response: { "message": "SocialMedia information added successfully" }
+    ```
+  - Response:
+    ```json
+    { "message": "SocialMedia information added successfully" }
+    ```
 
 Notes
 - For most operations, a valid userId must exist; otherwise the API responds with 404 Not Found.
