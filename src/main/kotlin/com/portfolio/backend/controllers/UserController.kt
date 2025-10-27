@@ -1,12 +1,8 @@
 package com.portfolio.backend.controllers
 
-import com.portfolio.backend.config.NotFoundException
 import com.portfolio.backend.dtos.OkayResponse
-import com.portfolio.backend.dtos.SocialMediaDto
-import com.portfolio.backend.dtos.UserResponse
+import com.portfolio.backend.dtos.UserDto
 import com.portfolio.backend.models.User
-import com.portfolio.backend.repositories.SocialMediaRepository
-import com.portfolio.backend.repositories.UserRepository
 import com.portfolio.backend.services.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -21,16 +17,26 @@ class UserController(
     fun getUserList() = userService.getAllUsers()
 
     @PostMapping
-    fun createUser(@RequestBody user: User): ResponseEntity<OkayResponse> {
-        userService.saveUser(user)
+    fun createUser(@RequestBody userDto: UserDto): ResponseEntity<OkayResponse> {
+        userService.saveUser(userDto)
         return ResponseEntity.ok()
             .body(OkayResponse(message = "User created successful"))
 
     }
 
     @GetMapping
-    fun getUser(@RequestParam("userId") userId: Long): ResponseEntity<UserResponse> {
+    fun getUser(@RequestParam("userId") userId: Long): ResponseEntity<UserDto> {
         return ResponseEntity.ok(userService.getUserById(userId))
+    }
+
+    @PutMapping
+    fun updateUser(
+        @RequestParam("userId") userId: Long,
+        @RequestBody userDto: UserDto
+    ): ResponseEntity<OkayResponse> {
+        userService.updateUser(userDto, userId)
+        return ResponseEntity.ok()
+            .body(OkayResponse(message = "User updated successful"))
     }
 
 }
