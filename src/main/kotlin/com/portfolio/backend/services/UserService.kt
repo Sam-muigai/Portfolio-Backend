@@ -2,7 +2,7 @@ package com.portfolio.backend.services
 
 import com.portfolio.backend.config.NotFoundException
 import com.portfolio.backend.dtos.SocialMediaDto
-import com.portfolio.backend.dtos.UserResponse
+import com.portfolio.backend.dtos.UserDto
 import com.portfolio.backend.models.User
 import com.portfolio.backend.repositories.SocialMediaRepository
 import com.portfolio.backend.repositories.UserRepository
@@ -16,7 +16,7 @@ class UserService(
 
     fun getAllUsers(): List<User> = userRepository.findAll()
 
-    fun getUserById(userId: Long): UserResponse {
+    fun getUserById(userId: Long): UserDto {
         val user = userRepository.findById(userId) ?: throw NotFoundException("User not found")
 
         val socialMedia = socialMediaRepository.findByUserId(userId)?.run {
@@ -28,15 +28,41 @@ class UserService(
                 youtubeUrl = youtubeUrl
             )
         }
-        return UserResponse(
+        return UserDto(
             user.name,
             user.country,
             user.role,
             socialMedia,
             user.email,
-            user.about
+            user.about,
+            user.profileImage
         )
     }
 
-    fun saveUser(user: User) = userRepository.save(user)
+    fun saveUser(userDto: UserDto) {
+        val user = User(
+            name = userDto.name,
+            country = userDto.country,
+            role = userDto.role,
+            email = userDto.email,
+            about = userDto.about,
+            profileImage = userDto.profileImage
+        )
+        userRepository.save(user)
+    }
+
+    fun updateUser(userDto: UserDto, id: Long) {
+        val user = User(
+            name = userDto.name,
+            country = userDto.country,
+            role = userDto.role,
+            email = userDto.email,
+            about = userDto.about,
+            profileImage = userDto.profileImage
+        )
+        if (userRepository.findById(id) == null) {
+            throw NotFoundException("User not found")
+        }
+        userRepository.update(user, id)
+    }
 }
