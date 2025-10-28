@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -33,5 +34,15 @@ class SocialMediaController(
         socialMediaService.addSocialMedia(userId, socialMediaDto)
         return ResponseEntity.ok()
             .body(OkayResponse(message = "SocialMedia information added successfully"))
+    }
+
+    @PutMapping
+    fun updateSocialMedia(
+        @RequestParam("userId") userId: Long,
+        @RequestBody socialMediaDto: SocialMediaDto,
+    ): ResponseEntity<OkayResponse> {
+        socialMediaService.updateSocialMedia(socialMediaDto, userId)
+        return ResponseEntity.ok()
+            .body(OkayResponse(message = "SocialMedia information updated successfully"))
     }
 }

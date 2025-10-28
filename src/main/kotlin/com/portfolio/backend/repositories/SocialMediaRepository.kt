@@ -27,4 +27,9 @@ class SocialMediaRepository(
         "INSERT INTO social_media (github_url, portfolio_url, x_url, linkedin_url, youtube_url, user_id) VALUES (?, ?, ?, ?, ?, ?)",
         socialMedia.githubUrl, socialMedia.portfolioUrl, socialMedia.xUrl, socialMedia.linkedinUrl, socialMedia.youtubeUrl, userId
     )
+
+    fun update(socialMedia: SocialMedia, userId: Long) = jdbcTemplate.update(
+        "UPDATE social_media SET github_url = ?, portfolio_url = ?, x_url = ?, linkedin_url = ?, youtube_url = ? WHERE user_id = ?",
+        socialMedia.githubUrl, socialMedia.portfolioUrl, socialMedia.xUrl, socialMedia.linkedinUrl, socialMedia.youtubeUrl, userId
+    )
 }
