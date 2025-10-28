@@ -39,4 +39,16 @@ class SocialMediaService(
         )
         return socialMediaDto
     }
+
+    fun updateSocialMedia(socialMediaDto: SocialMediaDto, userId: Long) {
+        if (userService.findById(userId) == null) throw NotFoundException("User not found")
+        val socialMedia = SocialMedia(
+            githubUrl = socialMediaDto.githubUrl,
+            portfolioUrl = socialMediaDto.portfolioUrl,
+            xUrl = socialMediaDto.xUrl,
+            linkedinUrl = socialMediaDto.linkedinUrl,
+            youtubeUrl = socialMediaDto.youtubeUrl
+        )
+        socialMediaRepository.update(socialMedia, userId)
+    }
 }
