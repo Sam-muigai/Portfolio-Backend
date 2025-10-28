@@ -46,7 +46,7 @@ class ExperienceService(
                 companyName = it.companyName,
                 location = it.location,
                 fromDate = it.fromDate.toString(),
-                toDate = it.toDate?.toString(),
+                toDate = it.toDate?.toString() ?: LocalDate.now().toString(),
                 description = it.description
             )
         }
