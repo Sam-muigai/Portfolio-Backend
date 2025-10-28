@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * Shared for both request and response.
  * */
 data class ExperienceDto(
+    val id: Long? = null,
     val title: String,
     @param:JsonProperty("company_name")
     val companyName: String,

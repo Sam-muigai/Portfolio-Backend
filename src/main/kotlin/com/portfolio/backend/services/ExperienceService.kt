@@ -42,6 +42,7 @@ class ExperienceService(
         }
         return experienceRepository.getAllExperiences(userId).map {
             ExperienceDto(
+                id = it.id!!,
                 title = it.title,
                 companyName = it.companyName,
                 location = it.location,
