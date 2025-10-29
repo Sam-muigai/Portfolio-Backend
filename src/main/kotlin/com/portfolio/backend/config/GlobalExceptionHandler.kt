@@ -4,11 +4,24 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.server.ResponseStatusException
 import java.time.LocalDateTime
 
 
 @ControllerAdvice
 class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResponseStatusException::class)
+    fun handleResponseStatusException(exception: ResponseStatusException): ResponseEntity<Map<String, Any>> {
+        val status = exception.statusCode
+        val errorResponse: MutableMap<String, Any> = HashMap()
+        errorResponse["status"] = status.value()
+        errorResponse["message"] = exception.reason ?: exception.message
+        errorResponse["timestamp"] = LocalDateTime.now()
+        val errorText = (status as? HttpStatus)?.reasonPhrase ?: status.toString()
+        errorResponse["error"] = errorText
+        return ResponseEntity.status(status).body(errorResponse.toMap())
+    }
 
     @ExceptionHandler(Exception::class)
     fun handleException(exception: Exception): ResponseEntity<Map<String, Any>> {
